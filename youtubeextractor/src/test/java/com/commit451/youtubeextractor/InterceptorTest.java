@@ -20,10 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21, shadows = NoBreakNetworkSecurityPolicy.class)
 public class InterceptorTest {
 
-    @Test public void testLanguage() throws Exception {
+    @Test
+    public void testLanguage() throws Exception {
         YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
         assertEquals(Locale.getDefault().getLanguage(), interceptor.mLanguage);
         String language = "test language";
@@ -31,7 +32,8 @@ public class InterceptorTest {
         assertEquals(language, interceptor.mLanguage);
     }
 
-    @Test public void testHeader() throws IOException {
+    @Test
+    public void testHeader() throws IOException {
         YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
         RealChain requestFacade = new RealChain();
         interceptor.intercept(requestFacade);
@@ -40,7 +42,8 @@ public class InterceptorTest {
         assertEquals(Locale.getDefault().getLanguage(), headers.get(YoutubeExtractorInterceptor.ACCEPT_LANGUAGE_HEADER));
     }
 
-    @Test public void testQueryParam() throws IOException {
+    @Test
+    public void testQueryParam() throws IOException {
         YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
         RealChain requestFacade = new RealChain();
         HttpUrl url = interceptor.intercept(requestFacade).request().url();
@@ -51,16 +54,19 @@ public class InterceptorTest {
 
         Headers mHeaders;
 
-        @Override public Request request() {
+        @Override
+        public Request request() {
             return new Request.Builder().url("http://test.url/").build();
         }
 
-        @Override public Response proceed(Request request) throws IOException {
+        @Override
+        public Response proceed(Request request) throws IOException {
             mHeaders = request.headers();
             return new Response.Builder().request(request).protocol(Protocol.SPDY_3).code(200).build();
         }
 
-        @Override public Connection connection() {
+        @Override
+        public Connection connection() {
             return mock(Connection.class);
         }
     }

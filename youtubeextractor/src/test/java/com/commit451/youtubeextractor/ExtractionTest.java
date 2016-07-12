@@ -11,7 +11,7 @@ import retrofit2.Response;
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21, shadows = NoBreakNetworkSecurityPolicy.class)
 public class ExtractionTest {
 
     private static final String GRID_YOUTUBE_ID = "9d8wWcJLnFI";
