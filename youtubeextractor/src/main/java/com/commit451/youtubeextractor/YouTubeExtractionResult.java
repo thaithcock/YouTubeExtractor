@@ -10,14 +10,14 @@ import android.support.annotation.Nullable;
  */
 public class YouTubeExtractionResult implements Parcelable {
 
-    private Uri mSd240VideoUri;
-    private Uri mSd360VideoUri;
-    private Uri mHd720VideoUri;
-    private Uri mHd1080VideoUri;
-    private Uri mMediumThumbUri;
-    private Uri mHighThumbUri;
-    private Uri mDefaultThumbUri;
-    private Uri mStandardThumbUri;
+    private Uri sd240VideoUri;
+    private Uri sd360VideoUri;
+    private Uri hd720VideoUri;
+    private Uri hd1080VideoUri;
+    private Uri mediumThumbUri;
+    private Uri highThumbUri;
+    private Uri defaultThumbUri;
+    private Uri standardThumbUri;
 
     protected YouTubeExtractionResult() {
         //Do the rest in the setters
@@ -25,41 +25,41 @@ public class YouTubeExtractionResult implements Parcelable {
 
     @Nullable
     public Uri getSd240VideoUri() {
-        return mSd240VideoUri;
+        return sd240VideoUri;
     }
 
     protected YouTubeExtractionResult setSd240VideoUri(Uri uri) {
-        mSd240VideoUri = uri;
+        sd240VideoUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getSd360VideoUri() {
-        return mSd360VideoUri;
+        return sd360VideoUri;
     }
 
     protected YouTubeExtractionResult setSd360VideoUri(Uri uri) {
-        mSd360VideoUri = uri;
+        sd360VideoUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getHd720VideoUri() {
-        return mHd720VideoUri;
+        return hd720VideoUri;
     }
 
     protected YouTubeExtractionResult setHd720VideoUri(Uri uri) {
-        mHd720VideoUri = uri;
+        hd720VideoUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getHd1080VideoUri() {
-        return mHd1080VideoUri;
+        return hd1080VideoUri;
     }
 
     protected YouTubeExtractionResult setHd1080VideoUri(Uri uri) {
-        mHd1080VideoUri = uri;
+        hd1080VideoUri = uri;
         return this;
     }
 
@@ -90,41 +90,41 @@ public class YouTubeExtractionResult implements Parcelable {
 
     @Nullable
     public Uri getMediumThumbUri() {
-        return mMediumThumbUri;
+        return mediumThumbUri;
     }
 
     protected YouTubeExtractionResult setMediumThumbUri(Uri uri) {
-        mMediumThumbUri = uri;
+        mediumThumbUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getHighThumbUri() {
-        return mHighThumbUri;
+        return highThumbUri;
     }
 
     protected YouTubeExtractionResult setHighThumbUri(Uri uri) {
-        mHighThumbUri = uri;
+        highThumbUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getDefaultThumbUri() {
-        return mDefaultThumbUri;
+        return defaultThumbUri;
     }
 
     protected YouTubeExtractionResult setDefaultThumbUri(Uri uri) {
-        mDefaultThumbUri = uri;
+        defaultThumbUri = uri;
         return this;
     }
 
     @Nullable
     public Uri getStandardThumbUri() {
-        return mStandardThumbUri;
+        return standardThumbUri;
     }
 
     protected YouTubeExtractionResult setStandardThumbUri(Uri uri) {
-        mStandardThumbUri = uri;
+        standardThumbUri = uri;
         return this;
     }
 
@@ -160,25 +160,25 @@ public class YouTubeExtractionResult implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.mSd240VideoUri, flags);
-        dest.writeParcelable(this.mSd360VideoUri, flags);
-        dest.writeParcelable(this.mHd720VideoUri, flags);
-        dest.writeParcelable(this.mHd1080VideoUri, flags);
-        dest.writeParcelable(this.mMediumThumbUri, flags);
-        dest.writeParcelable(this.mHighThumbUri, flags);
-        dest.writeParcelable(this.mDefaultThumbUri, flags);
-        dest.writeParcelable(this.mStandardThumbUri, flags);
+        dest.writeParcelable(this.sd240VideoUri, flags);
+        dest.writeParcelable(this.sd360VideoUri, flags);
+        dest.writeParcelable(this.hd720VideoUri, flags);
+        dest.writeParcelable(this.hd1080VideoUri, flags);
+        dest.writeParcelable(this.mediumThumbUri, flags);
+        dest.writeParcelable(this.highThumbUri, flags);
+        dest.writeParcelable(this.defaultThumbUri, flags);
+        dest.writeParcelable(this.standardThumbUri, flags);
     }
 
     protected YouTubeExtractionResult(Parcel in) {
-        this.mSd240VideoUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mSd360VideoUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mHd720VideoUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mHd1080VideoUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mMediumThumbUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mHighThumbUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mDefaultThumbUri = in.readParcelable(Uri.class.getClassLoader());
-        this.mStandardThumbUri = in.readParcelable(Uri.class.getClassLoader());
+        this.sd240VideoUri = in.readParcelable(Uri.class.getClassLoader());
+        this.sd360VideoUri = in.readParcelable(Uri.class.getClassLoader());
+        this.hd720VideoUri = in.readParcelable(Uri.class.getClassLoader());
+        this.hd1080VideoUri = in.readParcelable(Uri.class.getClassLoader());
+        this.mediumThumbUri = in.readParcelable(Uri.class.getClassLoader());
+        this.highThumbUri = in.readParcelable(Uri.class.getClassLoader());
+        this.defaultThumbUri = in.readParcelable(Uri.class.getClassLoader());
+        this.standardThumbUri = in.readParcelable(Uri.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<YouTubeExtractionResult> CREATOR = new Parcelable.Creator<YouTubeExtractionResult>() {

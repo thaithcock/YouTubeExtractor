@@ -2,7 +2,7 @@ package com.commit451.youtubeextractor;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
@@ -19,17 +19,17 @@ import okhttp3.Response;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21, shadows = NoBreakNetworkSecurityPolicy.class)
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 25)
 public class InterceptorTest {
 
     @Test
     public void testLanguage() throws Exception {
         YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
-        assertEquals(Locale.getDefault().getLanguage(), interceptor.mLanguage);
+        assertEquals(Locale.getDefault().getLanguage(), interceptor.language);
         String language = "test language";
         interceptor.setLanguage(language);
-        assertEquals(language, interceptor.mLanguage);
+        assertEquals(language, interceptor.language);
     }
 
     @Test

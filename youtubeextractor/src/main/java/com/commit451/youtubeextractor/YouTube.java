@@ -1,12 +1,12 @@
 package com.commit451.youtubeextractor;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface YouTube {
+interface YouTube {
 
-    @GET(YouTubeExtractorConstants.INFO)
-    Call<YouTubeExtractionResult> extract(@Query(YouTubeExtractorConstants.VIDEO_ID) String videoId);
+    @GET("get_video_info?el=info&ps=default&gl=US")
+    Single<YouTubeExtractionResult> extract(@Query("video_id") String videoId);
 
 }

@@ -15,10 +15,10 @@ class YoutubeExtractorInterceptor implements Interceptor {
     static final String ACCEPT_LANGUAGE_HEADER = "Accept-Language";
     static final String LANGUAGE_QUERY_PARAM = "language";
 
-    @NonNull String mLanguage;
+    @NonNull String language;
 
     YoutubeExtractorInterceptor() {
-        this.mLanguage = Locale.getDefault().getLanguage();
+        this.language = Locale.getDefault().getLanguage();
     }
 
     @Override public Response intercept(Chain chain) throws IOException {
@@ -27,17 +27,17 @@ class YoutubeExtractorInterceptor implements Interceptor {
 
         HttpUrl url = request.url()
             .newBuilder()
-            .addQueryParameter(LANGUAGE_QUERY_PARAM, mLanguage)
+            .addQueryParameter(LANGUAGE_QUERY_PARAM, language)
             .build();
 
         Request requestWithHeaders = request.newBuilder()
-            .addHeader(ACCEPT_LANGUAGE_HEADER, mLanguage)
+            .addHeader(ACCEPT_LANGUAGE_HEADER, language)
             .url(url)
             .build();
         return chain.proceed(requestWithHeaders);
     }
 
-    public void setLanguage(@NonNull String language) {
-        mLanguage = language;
+    void setLanguage(@NonNull String language) {
+        this.language = language;
     }
 }

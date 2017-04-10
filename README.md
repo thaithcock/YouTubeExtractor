@@ -1,5 +1,5 @@
 # YouTubeExtractor
-A helper to extract the streaming URL from a YouTube video
+A helper to extract the streaming URL from a YouTube video using RxJava and Retrofit
 
 [![Build Status](https://travis-ci.org/Commit451/YouTubeExtractor.svg?branch=master)](https://travis-ci.org/Commit451/YouTubeExtractor)
 [![](https://jitpack.io/v/Commit451/YouTubeExtractor.svg)](https://jitpack.io/#Commit451/YouTubeExtractor)
@@ -22,72 +22,43 @@ allprojects {
 Then, add the library to your project `build.gradle`
 ```gradle
 dependencies {
-    compile 'com.github.Commit451.YouTubeExtractor:youtubeextractor:2.1.0'
-}
-```
-or, if you want to use the [RxJava](https://github.com/ReactiveX/RxJava) version of the extractor:
-```gradle
-dependencies {
-    compile 'com.github.Commit451.YouTubeExtractor:youtubeextractor:2.1.0'
-    //You will still need the dependency above
-    compile 'com.github.Commit451.YouTubeExtractor:rxyoutubeextractor:2.1.0'
+    compile 'com.github.Commit451:YouTubeExtractor:3.0.0'
 }
 ```
 
 # Usage
-Under the hood, this library uses [Retrofit](http://square.github.io/retrofit/) to fetch the video metadata. If you are familiar with the Retrofit public API, this library will be a breeze for you.
+Under the hood, this library uses [Retrofit](http://square.github.io/retrofit/) to fetch the video metadata as an RxJava Single. If you are familiar with the Retrofit public API, this library will be a breeze for you.
 
-Typical usage looks like this:
 ```java
-// You probably would want to keep one of these extractors around.
 YouTubeExtractor extractor = YouTubeExtractor.create();
-mExtractor.extract("9d8wWcJLnFI").enqueue(new Callback<YouTubeExtractionResult>() {
-    @Override
-    public void onResponse(Call<YouTubeExtractionResult> call, Response<YouTubeExtractionResult> response) {
-        Uri hdUri = result.getHd1080VideoUri();
-        //See the sample for more
-    }
-
-    @Override
-    public void onFailure(Call<YouTubeExtractionResult> call, Throwable t) {
-        t.printStackTrace();
-        //Alert your user!
-    }
-});
-```
-And for RxJava users:
-```java
-RxYouTubeExtractor rxYouTubeExtractor = RxYouTubeExtractor.create();
 Observable<YouTubeExtractionResult> result = rxYouTubeExtractor.extract("9d8wWcJLnFI");
-result.subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Subscriber<YouTubeExtractionResult>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                //Alert your user!
-            }
-
-            @Override
-            public void onNext(YouTubeExtractionResult youTubeExtractionResult) {
-                Uri hdUri = youTubeExtractionResult.getHd1080VideoUri();
-                //See the sample for more
-            }
-        });
+extractor.extract("9d8wWcJLnFI")
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(new SingleObserver<YouTubeExtractionResult>() {
+        @Override
+        public void onSubscribe(Disposable d) {
+            //You should store this disposable and dispose when appropriate
+        }
+    
+        @Override
+        public void onSuccess(YouTubeExtractionResult value) {
+            bindVideoResult(value);
+        }
+    
+        @Override
+        public void onError(Throwable e) {
+            MainActivity.this.onError(e);
+        }
+    });
 ```
 Note: the above example also requires [RxAndroid](https://github.com/ReactiveX/RxAndroid) for `AndroidSchedulers`
 
-As you can with Retrofit, you can also extract the result right away:
+As you can with Retrofit+RxJava, you can also extract the result right away:
 ```java
 // this will extract the result on the current thread. Don't use this on the main thread!
-Response<YouTubeExtractionResult> response = extractor.extract(GRID_VIDEO_ID).execute();
-if (response.isSuccessful()) {
-    //do your thing(s)
-}
+YouTubeExtractionResult result = extractor.extract(GRID_VIDEO_ID)
+    .blockingGet();
 ```
 
 # Video Playback
