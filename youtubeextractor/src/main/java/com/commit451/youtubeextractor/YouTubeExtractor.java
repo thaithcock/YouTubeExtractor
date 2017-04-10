@@ -16,6 +16,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class YouTubeExtractor {
 
     private static final String BASE_URL = "https://www.youtube.com/";
+
     static final int YOUTUBE_VIDEO_QUALITY_SMALL_240 = 36;
     static final int YOUTUBE_VIDEO_QUALITY_MEDIUM_360 = 18;
     static final int YOUTUBE_VIDEO_QUALITY_HD_720 = 22;
@@ -38,7 +39,7 @@ public class YouTubeExtractor {
     }
 
     private final YouTube youTube;
-    private final YoutubeExtractorInterceptor interceptor;
+    private final LanguageInterceptor interceptor;
 
     /**
      * Create a new YouTubeExtractor
@@ -49,7 +50,7 @@ public class YouTubeExtractor {
             okBuilder = new OkHttpClient.Builder();
         }
 
-        interceptor = new YoutubeExtractorInterceptor();
+        interceptor = new LanguageInterceptor();
         okBuilder.addInterceptor(interceptor);
 
         Retrofit.Builder retrofitBuilder = new Retrofit.Builder();

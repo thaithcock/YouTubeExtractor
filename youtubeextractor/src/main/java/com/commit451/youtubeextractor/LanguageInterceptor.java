@@ -10,30 +10,32 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-class YoutubeExtractorInterceptor implements Interceptor {
+class LanguageInterceptor implements Interceptor {
 
     static final String ACCEPT_LANGUAGE_HEADER = "Accept-Language";
     static final String LANGUAGE_QUERY_PARAM = "language";
 
-    @NonNull String language;
+    @NonNull
+    String language;
 
-    YoutubeExtractorInterceptor() {
+    LanguageInterceptor() {
         this.language = Locale.getDefault().getLanguage();
     }
 
-    @Override public Response intercept(Chain chain) throws IOException {
+    @Override
+    public Response intercept(Chain chain) throws IOException {
 
         Request request = chain.request();
 
         HttpUrl url = request.url()
-            .newBuilder()
-            .addQueryParameter(LANGUAGE_QUERY_PARAM, language)
-            .build();
+                .newBuilder()
+                .addQueryParameter(LANGUAGE_QUERY_PARAM, language)
+                .build();
 
         Request requestWithHeaders = request.newBuilder()
-            .addHeader(ACCEPT_LANGUAGE_HEADER, language)
-            .url(url)
-            .build();
+                .addHeader(ACCEPT_LANGUAGE_HEADER, language)
+                .url(url)
+                .build();
         return chain.proceed(requestWithHeaders);
     }
 

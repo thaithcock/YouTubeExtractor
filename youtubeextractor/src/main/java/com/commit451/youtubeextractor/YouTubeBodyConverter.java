@@ -25,7 +25,7 @@ class YouTubeBodyConverter implements Converter<ResponseBody, YouTubeExtractionR
 
     private HttpUrl mBaseUrl;
 
-    public YouTubeBodyConverter(HttpUrl baseUrl) {
+    YouTubeBodyConverter(HttpUrl baseUrl) {
         mBaseUrl = baseUrl;
     }
 

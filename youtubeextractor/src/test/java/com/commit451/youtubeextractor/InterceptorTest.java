@@ -25,7 +25,7 @@ public class InterceptorTest {
 
     @Test
     public void testLanguage() throws Exception {
-        YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
+        LanguageInterceptor interceptor = new LanguageInterceptor();
         assertEquals(Locale.getDefault().getLanguage(), interceptor.language);
         String language = "test language";
         interceptor.setLanguage(language);
@@ -34,20 +34,20 @@ public class InterceptorTest {
 
     @Test
     public void testHeader() throws IOException {
-        YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
+        LanguageInterceptor interceptor = new LanguageInterceptor();
         RealChain requestFacade = new RealChain();
         interceptor.intercept(requestFacade);
         Headers headers = requestFacade.mHeaders;
         assertEquals(1, headers.size());
-        assertEquals(Locale.getDefault().getLanguage(), headers.get(YoutubeExtractorInterceptor.ACCEPT_LANGUAGE_HEADER));
+        assertEquals(Locale.getDefault().getLanguage(), headers.get(LanguageInterceptor.ACCEPT_LANGUAGE_HEADER));
     }
 
     @Test
     public void testQueryParam() throws IOException {
-        YoutubeExtractorInterceptor interceptor = new YoutubeExtractorInterceptor();
+        LanguageInterceptor interceptor = new LanguageInterceptor();
         RealChain requestFacade = new RealChain();
         HttpUrl url = interceptor.intercept(requestFacade).request().url();
-        assertEquals(Locale.getDefault().getLanguage(), url.queryParameter(YoutubeExtractorInterceptor.LANGUAGE_QUERY_PARAM));
+        assertEquals(Locale.getDefault().getLanguage(), url.queryParameter(LanguageInterceptor.LANGUAGE_QUERY_PARAM));
     }
 
     static class RealChain implements Interceptor.Chain {

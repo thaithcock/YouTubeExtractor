@@ -13,7 +13,7 @@ import retrofit2.Retrofit;
  */
 class YouTubeExtractionConverterFactory extends Converter.Factory {
 
-    public static YouTubeExtractionConverterFactory create() {
+    static YouTubeExtractionConverterFactory create() {
         return new YouTubeExtractionConverterFactory();
     }
 

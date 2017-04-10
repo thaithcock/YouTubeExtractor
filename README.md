@@ -22,7 +22,7 @@ allprojects {
 Then, add the library to your project `build.gradle`
 ```gradle
 dependencies {
-    compile 'com.github.Commit451:YouTubeExtractor:3.0.0'
+    compile 'com.github.Commit451:YouTubeExtractor:latest.version.here'
 }
 ```
 
@@ -30,8 +30,8 @@ dependencies {
 Under the hood, this library uses [Retrofit](http://square.github.io/retrofit/) to fetch the video metadata as an RxJava Single. If you are familiar with the Retrofit public API, this library will be a breeze for you.
 
 ```java
+//create one of these and reuse it for performance reasons
 YouTubeExtractor extractor = YouTubeExtractor.create();
-Observable<YouTubeExtractionResult> result = rxYouTubeExtractor.extract("9d8wWcJLnFI");
 extractor.extract("9d8wWcJLnFI")
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
@@ -67,7 +67,7 @@ As stated before, this library was only created to extract video stream Urls fro
 License
 --------
 
-    Copyright 2016 Commit 451
+    Copyright 2017 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
