@@ -6,7 +6,7 @@ A helper to extract the streaming URL from a YouTube video using RxJava and Retr
 
 This library was originally found [here](https://github.com/flipstudio/YouTubeExtractor) in a project by [flipstudio](https://github.com/flipstudio). It has since been modified and cleaned up a bit to make it more user friendly.
 
-# Gradle Dependency
+## Gradle Dependency
 
 Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
 
@@ -22,47 +22,45 @@ allprojects {
 Then, add the library to your project `build.gradle`
 ```gradle
 dependencies {
-    compile 'com.github.Commit451:YouTubeExtractor:latest.version.here'
+    implementation 'com.github.Commit451:YouTubeExtractor:latest.version.here'
 }
 ```
 
-# Usage
+## Usage
 Under the hood, this library uses [Retrofit](http://square.github.io/retrofit/) to fetch the video metadata as an RxJava Single. If you are familiar with the Retrofit public API, this library will be a breeze for you.
 
-```java
+```kotlin
 //create one of these and reuse it for performance reasons
 YouTubeExtractor extractor = YouTubeExtractor.create();
 extractor.extract("9d8wWcJLnFI")
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
-    .subscribe(new SingleObserver<YouTubeExtractionResult>() {
-        @Override
-        public void onSubscribe(Disposable d) {
-            //You should store this disposable and dispose when appropriate
+    .subscribe(object : SingleObserver<YouTubeExtractionResult> {
+        override fun onSubscribe(d: Disposable) {}
+
+        override fun onSuccess(value: YouTubeExtractionResult) {
+            bindVideoResult(value)
         }
-    
-        @Override
-        public void onSuccess(YouTubeExtractionResult value) {
-            bindVideoResult(value);
+
+        override fun onError(e: Throwable) {
+            this@MainActivity.onError(e)
         }
-    
-        @Override
-        public void onError(Throwable e) {
-            MainActivity.this.onError(e);
-        }
-    });
+    })
 ```
 Note: the above example also requires [RxAndroid](https://github.com/ReactiveX/RxAndroid) for `AndroidSchedulers`
 
 As you can with Retrofit+RxJava, you can also extract the result right away:
-```java
+```kotlin
 // this will extract the result on the current thread. Don't use this on the main thread!
-YouTubeExtractionResult result = extractor.extract(GRID_VIDEO_ID)
-    .blockingGet();
+val result = extractor.extract("9d8wWcJLnFI")
+    .blockingGet()
 ```
 
-# Video Playback
+## Video Playback
 As stated before, this library was only created to extract video stream Urls from YouTube. I recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
+
+## ProGuard
+This library uses Retrofit under the hood, so you may need to apply their ProGuard rules
 
 License
 --------
