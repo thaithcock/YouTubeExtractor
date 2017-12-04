@@ -21,5 +21,6 @@ class ExtractionTest {
         val result = extractor.extract(GRID_YOUTUBE_ID)
                 .blockingGet()
         Assert.assertNotNull(result)
+        Assert.assertNotNull(result.bestAvailableQualityVideoUrl())
     }
 }
