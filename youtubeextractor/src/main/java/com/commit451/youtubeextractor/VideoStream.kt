@@ -4,7 +4,7 @@ package com.commit451.youtubeextractor
 /**
  * A stream
  */
-class VideoStream(val url: String, val format: String, val resolution: String) {
+data class VideoStream(val url: String, val format: String, val resolution: String) {
 
     companion object {
         const val FORMAT_v3GPP = "v3GPP"

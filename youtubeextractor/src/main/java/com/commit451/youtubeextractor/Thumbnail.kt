@@ -3,7 +3,7 @@ package com.commit451.youtubeextractor
 /**
  * A video thumbnail
  */
-class Thumbnail(val url: String, val quality: String) {
+data class Thumbnail(val url: String, val quality: String) {
 
     companion object {
         const val QUALITY_MAX_RES = "maxresdefault"
