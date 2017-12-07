@@ -1,30 +1,11 @@
 package com.commit451.youtubeextractor
 
-import org.mozilla.javascript.Context
-import org.mozilla.javascript.Function
 import java.net.URLDecoder
 import java.util.HashMap
 import java.util.regex.Pattern
 
 
 internal object Util {
-
-    fun decryptSignature(encryptedSig: String, decryptionCode: String): String {
-        val context = Context.enter()
-        context.optimizationLevel = -1
-        val result: Any?
-        try {
-            val scope = context.initStandardObjects()
-            context.evaluateString(scope, decryptionCode, "decryptionCode", 1, null)
-            val decryptionFunc = scope.get("decrypt", scope) as Function
-            result = decryptionFunc.call(context, scope, scope, arrayOf<Any>(encryptedSig))
-        } catch (e: Exception) {
-            throw e
-        } finally {
-            Context.exit()
-        }
-        return result?.toString() ?: ""
-    }
 
     fun matchGroup(pattern: String, input: String, group: Int): String {
         val pat = Pattern.compile(pattern)

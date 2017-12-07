@@ -78,9 +78,6 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
     }
 
     private fun formatPlayerUrl(playerConfig: PlayerConfig): String {
-        // The Youtube service needs to be initialized by downloading the
-        // js-Youtube-player. This is done in order to get the algorithm
-        // for decrypting cryptic signatures inside certain stream urls.
         var playerUrl = playerConfig.assets?.js!!
 
         if (playerUrl.startsWith("//")) {
@@ -110,13 +107,12 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
             if (ItagItem.isSupported(itag)) {
                 val itagItem = ItagItem.getItag(itag)
                 var streamUrl = tags["url"]
-                // if video has a signature: decrypt it and add it to the url
                 val signature = tags["s"]
                 if (signature != null) {
                     //TODO remove the need to remove all \n. It breaks the regex we have
                     val playerCode = urlToString(playerUrl)
                             .replace("\n", "")
-                    streamUrl = streamUrl + "&signature=" + Util.decryptSignature(signature, JavaScriptUtil.loadDecryptionCode(playerCode))
+                    streamUrl = streamUrl + "&signature=" + JavaScriptUtil.decryptSignature(signature, JavaScriptUtil.loadDecryptionCode(playerCode))
                 }
                 if (streamUrl != null) {
                     urlAndItags.put(streamUrl, itagItem)
