@@ -4,8 +4,8 @@ import com.squareup.moshi.Json
 
 internal class PlayerArgs {
 
-    @Json(name = "url_encoded_fmt_stream_map")
+    @field:Json(name = "url_encoded_fmt_stream_map")
     var urlEncodedFmtStreamMap: String? = null
-    @Json(name = "title")
+    @field:Json(name = "title")
     var title: String? = null
 }

@@ -7,15 +7,11 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-
 import com.bumptech.glide.Glide
 import com.commit451.youtubeextractor.YouTubeExtraction
 import com.commit451.youtubeextractor.YouTubeExtractor
 import com.devbrackets.android.exomedia.ui.widget.VideoView
-
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
@@ -45,16 +41,10 @@ class MainActivity : AppCompatActivity() {
         extractor.extract(GRID_YOUTUBE_ID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<YouTubeExtraction> {
-                    override fun onSubscribe(d: Disposable) {}
-
-                    override fun onSuccess(value: YouTubeExtraction) {
-                        bindVideoResult(value)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        this@MainActivity.onError(e)
-                    }
+                .subscribe({ extraction ->
+                    bindVideoResult(extraction)
+                }, { t ->
+                    onError(t)
                 })
         if (savedInstanceState != null) {
             savedPosition = savedInstanceState.getInt(STATE_SAVED_POSITION, 0)

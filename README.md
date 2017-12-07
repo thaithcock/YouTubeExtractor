@@ -27,7 +27,7 @@ dependencies {
 ```
 
 ## Usage
-Under the hood, this library uses [Retrofit](http://square.github.io/retrofit/) to fetch the video metadata as an RxJava Single. If you are familiar with the Retrofit public API, this library will be a breeze for you.
+If you are familiar with RxJava, the extractor returns a Single:
 
 ```kotlin
 //create one of these and reuse it for performance reasons
@@ -35,16 +35,10 @@ YouTubeExtractor extractor = YouTubeExtractor.create();
 extractor.extract("9d8wWcJLnFI")
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())
-    .subscribe(object : SingleObserver<YouTubeExtractionResult> {
-        override fun onSubscribe(d: Disposable) {}
-
-        override fun onSuccess(value: YouTubeExtractionResult) {
-            bindVideoResult(value)
-        }
-
-        override fun onError(e: Throwable) {
-            this@MainActivity.onError(e)
-        }
+    .subscribe({ extraction ->
+        bindVideoResult(extraction)
+    }, { t ->
+        onError(t)
     })
 ```
 Note: the above example also requires [RxAndroid](https://github.com/ReactiveX/RxAndroid) for `AndroidSchedulers`
@@ -57,17 +51,17 @@ val result = extractor.extract("9d8wWcJLnFI")
 ```
 
 ## Video Playback
-As stated before, this library was only created to extract video stream Urls from YouTube. We recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
+As stated before, this library was only created to extract video stream URLs from YouTube. We recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
 
 ## ProGuard
-This library uses [OkHttp](https://github.com/square/okhttp) under the hood, so you may need to apply their ProGuard rules
+This library uses [OkHttp](https://github.com/square/okhttp) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules
 
 ## Notes
-This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs. If you need a more feature complete extractor, please take a look at [NewPipeExtractor](https://github.com/TeamNewPipe/NewPipeExtractor)
+This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs.
 
 Known Failure Points:
-- Video is age restricted
-- Video is Audio only
+- Videos that are age restricted
+- Videos that are Audio only
 
 License
 --------
