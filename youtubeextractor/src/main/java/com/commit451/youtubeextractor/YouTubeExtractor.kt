@@ -1,11 +1,10 @@
 package com.commit451.youtubeextractor
 
+import com.grack.nanojson.JsonParser
+import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.Request
-
-import com.grack.nanojson.JsonParser
-import com.squareup.moshi.Moshi
 import org.jsoup.parser.Parser
 
 
@@ -19,6 +18,22 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
     companion object {
 
         private const val BASE_URL = "https://www.youtube.com"
+
+        /**
+         * Extract the thumbnails for the video. This will be done if you call
+         * [extract] but since it is a lightweight operation, you can do it
+         * synchronously if you choose
+         */
+        fun extractThumbnails(videoId: String): List<Thumbnail> {
+            return YouTubeImageHelper.extractAll(videoId)
+        }
+
+        /**
+         * Extract a thumbnail of a specific quality. See qualities within [Thumbnail]
+         */
+        fun extractThumbnail(videoId: String, quality: String): Thumbnail {
+            return YouTubeImageHelper.extract(videoId, quality)
+        }
 
         /**
          * Create a new YouTubeExtractor with a custom OkHttp client builder
@@ -61,7 +76,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
             val videoStreams = parseVideoStreams(playerArgs, playerUrl)
 
-            val extraction = YouTubeExtraction(videoId, playerArgs.title!!, videoStreams)
+            val extraction = YouTubeExtraction(videoId, playerArgs.title!!, videoStreams, extractThumbnails(videoId))
             Single.just(extraction)
         }
     }

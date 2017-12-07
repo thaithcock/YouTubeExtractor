@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         val videoUrl = result.videoStreams.first().url
         Log.d("OnSuccess", "Got a result with the best url: $videoUrl")
         Glide.with(this)
-                .load("https://img.youtube.com/vi/${result.videoId}/maxresdefault.jpg")
+                .load(result.thumbnails.first().url)
                 .into(imageView)
         videoView.setVideoURI(Uri.parse(videoUrl))
     }

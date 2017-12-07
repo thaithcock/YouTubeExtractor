@@ -2,7 +2,7 @@ package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Json
 
-class PlayerConfig {
+internal class PlayerConfig {
 
     @Json(name = "args")
     var args: PlayerArgs? = null

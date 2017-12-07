@@ -2,7 +2,7 @@ package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Json
 
-class PlayerArgs {
+internal class PlayerArgs {
 
     @Json(name = "url_encoded_fmt_stream_map")
     var urlEncodedFmtStreamMap: String? = null
