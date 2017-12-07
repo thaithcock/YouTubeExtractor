@@ -57,10 +57,17 @@ val result = extractor.extract("9d8wWcJLnFI")
 ```
 
 ## Video Playback
-As stated before, this library was only created to extract video stream Urls from YouTube. I recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
+As stated before, this library was only created to extract video stream Urls from YouTube. We recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
 
 ## ProGuard
-This library uses Retrofit under the hood, so you may need to apply their ProGuard rules
+This library uses [OkHttp](https://github.com/square/okhttp) under the hood, so you may need to apply their ProGuard rules
+
+## Notes
+This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs. If you need a more feature complete extractor, please take a look at [NewPipeExtractor](https://github.com/TeamNewPipe/NewPipeExtractor)
+
+Known Failure Points:
+- Video is age restricted
+- Video is Audio only
 
 License
 --------

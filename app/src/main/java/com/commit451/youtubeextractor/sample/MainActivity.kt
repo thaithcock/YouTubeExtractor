@@ -11,8 +11,6 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.commit451.youtubeextractor.YouTubeExtraction
 import com.commit451.youtubeextractor.YouTubeExtractor
-import com.commit451.youtubeextractor.bestAvailableQualityThumbUri
-import com.commit451.youtubeextractor.bestAvailableQualityVideoUrl
 import com.devbrackets.android.exomedia.ui.widget.VideoView
 
 import io.reactivex.SingleObserver
@@ -91,10 +89,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindVideoResult(result: YouTubeExtraction) {
-        val videoUrl = result.bestAvailableQualityVideoUrl()
+        val videoUrl = result.videoStreams.first().url
         Log.d("OnSuccess", "Got a result with the best url: $videoUrl")
         Glide.with(this)
-                .load(result.bestAvailableQualityThumbUri())
+                .load("https://img.youtube.com/vi/${result.videoId}/maxresdefault.jpg")
                 .into(imageView)
         videoView.setVideoURI(Uri.parse(videoUrl))
     }

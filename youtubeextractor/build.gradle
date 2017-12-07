@@ -7,14 +7,18 @@ ext {
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    api 'com.squareup.okhttp3:okhttp:3.9.1'
+    api 'com.squareup.moshi:moshi:1.5.0'
+
+    api "io.reactivex.rxjava2:rxjava:2.1.7"
+
+    api 'org.jsoup:jsoup:1.10.3'
+
+    api 'com.grack:nanojson:1.1'
+
+    api 'org.mozilla:rhino:1.7.7.1'
 
     testImplementation 'junit:junit:4.12'
-
-    testImplementation 'org.robolectric:robolectric:3.5.1'
-
-    testImplementation 'org.mockito:mockito-core:2.8.47'
 }
 
 sourceCompatibility = "1.8"
