@@ -1,5 +1,8 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'maven'
+
+group = 'com.github.Commit451'
 
 ext {
     retrofitVersion = '2.3.0'
@@ -12,7 +15,7 @@ dependencies {
 
     api "io.reactivex.rxjava2:rxjava:2.1.7"
 
-    api 'org.jsoup:jsoup:1.10.3'
+    api 'org.jsoup:jsoup:1.11.1'
 
     api 'com.grack:nanojson:1.1'
 
