@@ -4,8 +4,6 @@ A helper to extract the streaming URL from a YouTube video using RxJava and Retr
 [![Build Status](https://travis-ci.org/Commit451/YouTubeExtractor.svg?branch=master)](https://travis-ci.org/Commit451/YouTubeExtractor)
 [![](https://jitpack.io/v/Commit451/YouTubeExtractor.svg)](https://jitpack.io/#Commit451/YouTubeExtractor)
 
-This library was originally found [here](https://github.com/flipstudio/YouTubeExtractor) in a project by [flipstudio](https://github.com/flipstudio). It has since been modified and cleaned up a bit to make it more user friendly.
-
 ## Gradle Dependency
 
 Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
@@ -43,18 +41,18 @@ extractor.extract("9d8wWcJLnFI")
 ```
 Note: the above example also requires [RxAndroid](https://github.com/ReactiveX/RxAndroid) for `AndroidSchedulers`
 
-As you can with Retrofit+RxJava, you can also extract the result right away:
+You can also extract the result right away:
 ```kotlin
-// this will extract the result on the current thread. Don't use this on the main thread!
-val result = extractor.extract("9d8wWcJLnFI")
+// Don't do this on the main thread!
+val extraction = extractor.extract("9d8wWcJLnFI")
     .blockingGet()
 ```
 
 ## Video Playback
-As stated before, this library was only created to extract video stream URLs from YouTube. We recommend using the [ExoMedia](https://github.com/brianwernick/ExoMedia) library to play the video streams to the user. See the sample app for this library for an example.
+This library was only created to extract video stream URLs from YouTube, not provide a video player. [ExoMedia](https://github.com/brianwernick/ExoMedia) is a great library for playing the video streams to the user. See the sample app for an example.
 
 ## ProGuard
-This library uses [OkHttp](https://github.com/square/okhttp) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules
+This library uses [OkHttp](https://github.com/square/okhttp) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules.
 
 ## Notes
 This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs.
