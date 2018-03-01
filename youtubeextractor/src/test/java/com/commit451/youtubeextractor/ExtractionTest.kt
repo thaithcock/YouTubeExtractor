@@ -6,7 +6,7 @@ import org.junit.Test
 class ExtractionTest {
 
     companion object {
-        private val GRID_YOUTUBE_ID = "orxXlAltFQg"
+        private const val GRID_YOUTUBE_ID = "UAz1Apj2kqs"
     }
 
     @Test

@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private val GRID_YOUTUBE_ID = "9d8wWcJLnFI"
+        private const val GRID_YOUTUBE_ID = "UAz1Apj2kqs"
 
-        private val STATE_SAVED_POSITION = "saved_position"
+        private const val KEY_SAVED_POSITION = "saved_position"
     }
 
     lateinit var imageView: ImageView
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                     onError(t)
                 })
         if (savedInstanceState != null) {
-            savedPosition = savedInstanceState.getInt(STATE_SAVED_POSITION, 0)
+            savedPosition = savedInstanceState.getInt(KEY_SAVED_POSITION, 0)
         }
         videoView.setOnPreparedListener({
             videoView.setVolume(0f)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(STATE_SAVED_POSITION, savedPosition)
+        outState.putInt(KEY_SAVED_POSITION, savedPosition)
     }
 
     private fun onError(t: Throwable) {

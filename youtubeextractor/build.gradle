@@ -13,7 +13,7 @@ dependencies {
     api 'com.squareup.okhttp3:okhttp:3.9.1'
     api 'com.squareup.moshi:moshi:1.5.0'
 
-    api "io.reactivex.rxjava2:rxjava:2.1.7"
+    api "io.reactivex.rxjava2:rxjava:2.1.9"
 
     api 'org.jsoup:jsoup:1.11.1'
 
@@ -24,5 +24,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
