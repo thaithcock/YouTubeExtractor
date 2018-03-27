@@ -62,7 +62,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
      */
     fun extract(videoId: String): Single<YouTubeExtraction> {
         return Single.defer {
-            val url = BASE_URL + "/watch?v=$videoId"
+            val url = "$BASE_URL/watch?v=$videoId"
             val pageContent = urlToString(url)
 
             val ytPlayerConfigJson = Util.matchGroup("ytplayer.config\\s*=\\s*(\\{.*?\\});", pageContent, 1)
@@ -76,7 +76,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
             val videoStreams = parseVideoStreams(playerArgs, playerUrl)
 
-            val extraction = YouTubeExtraction(videoId, playerArgs.title!!, videoStreams, extractThumbnails(videoId))
+            val extraction = YouTubeExtraction(videoId, playerArgs.title ?: "", videoStreams, extractThumbnails(videoId))
             Single.just(extraction)
         }
     }
