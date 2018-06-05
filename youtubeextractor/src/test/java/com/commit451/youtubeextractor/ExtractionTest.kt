@@ -6,13 +6,13 @@ import org.junit.Test
 class ExtractionTest {
 
     companion object {
-        private const val GRID_YOUTUBE_ID = "UAz1Apj2kqs"
+        private const val YOUTUBE_ID = "UEuOpxOrA_0"
     }
 
     @Test
     fun testExtraction() {
         val extractor = YouTubeExtractor.create()
-        val result = extractor.extract(GRID_YOUTUBE_ID)
+        val result = extractor.extract(YOUTUBE_ID)
                 .blockingGet()
         Assert.assertNotNull(result)
         Assert.assertTrue(result.videoStreams.isNotEmpty())

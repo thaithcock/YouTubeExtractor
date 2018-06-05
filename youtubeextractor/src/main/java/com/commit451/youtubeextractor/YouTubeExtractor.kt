@@ -5,6 +5,7 @@ import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.jsoup.Jsoup
 import org.jsoup.parser.Parser
 
 
@@ -64,6 +65,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
         return Single.defer {
             val url = "$BASE_URL/watch?v=$videoId"
             val pageContent = urlToString(url)
+            val doc = Jsoup.parse(pageContent)
 
             val ytPlayerConfigJson = Util.matchGroup("ytplayer.config\\s*=\\s*(\\{.*?\\});", pageContent, 1)
             val ytPlayerConfig = moshi.adapter<PlayerConfig>(PlayerConfig::class.java).fromJson(ytPlayerConfigJson)!!
@@ -75,10 +77,26 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
             val playerArgs = ytPlayerConfig.args!!
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
             val videoStreams = parseVideoStreams(playerArgs, playerUrl)
-
-            val extraction = YouTubeExtraction(videoId, playerArgs.title ?: "", videoStreams, extractThumbnails(videoId))
+            val description = tryIgnoringException { doc.select("p[id=\"eow-description\"]").first().html() }
+            val extraction = YouTubeExtraction(videoId,
+                    playerArgs.title,
+                    videoStreams,
+                    extractThumbnails(videoId),
+                    playerArgs.author,
+                    description,
+                    playerArgs.viewCount?.toLongOrNull(),
+                    playerArgs.lengthSeconds?.toLongOrNull())
             Single.just(extraction)
         }
+    }
+
+    private fun tryIgnoringException(block: () -> String): String? {
+        try {
+            return block.invoke()
+        } catch (e: Exception) {
+            //we tried our best
+        }
+        return null
     }
 
     private fun urlToString(url: String): String {
@@ -96,7 +114,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
         var playerUrl = playerConfig.assets?.js!!
 
         if (playerUrl.startsWith("//")) {
-            playerUrl = "https:" + playerUrl
+            playerUrl = "https:$playerUrl"
         }
         if (!playerUrl.startsWith(BASE_URL)) {
             playerUrl = BASE_URL + playerUrl

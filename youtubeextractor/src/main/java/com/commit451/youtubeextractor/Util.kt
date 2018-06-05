@@ -1,7 +1,7 @@
 package com.commit451.youtubeextractor
 
 import java.net.URLDecoder
-import java.util.HashMap
+import java.util.*
 import java.util.regex.Pattern
 
 
@@ -15,7 +15,7 @@ internal object Util {
             return mat.group(group)
         } else {
             if (input.length > 1024) {
-                throw Exception("failed to find pattern \"" + pattern)
+                throw Exception("failed to find pattern \"$pattern")
             } else {
                 throw Exception("failed to find pattern \"$pattern inside of $input\"")
             }

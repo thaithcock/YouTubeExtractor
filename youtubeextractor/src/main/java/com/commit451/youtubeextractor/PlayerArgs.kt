@@ -8,4 +8,10 @@ internal class PlayerArgs {
     var urlEncodedFmtStreamMap: String? = null
     @field:Json(name = "title")
     var title: String? = null
+    @field:Json(name = "author")
+    var author: String? = null
+    @field:Json(name = "view_count")
+    var viewCount: String? = null
+    @field:Json(name = "length_seconds")
+    var lengthSeconds: String? = null
 }
