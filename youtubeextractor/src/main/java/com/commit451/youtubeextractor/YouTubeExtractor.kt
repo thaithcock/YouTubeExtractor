@@ -1,6 +1,5 @@
 package com.commit451.youtubeextractor
 
-import com.grack.nanojson.JsonParser
 import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import okhttp3.OkHttpClient
@@ -75,11 +74,6 @@ class YouTubeExtractor private constructor(builder: Builder) {
 
             val ytPlayerConfigJson = Util.matchGroup("ytplayer.config\\s*=\\s*(\\{.*?\\});", pageContent, 1)
             val ytPlayerConfig = moshi.adapter<PlayerConfig>(PlayerConfig::class.java).fromJson(ytPlayerConfigJson)!!
-            //TODO remove this once we figure out why moshi cannot handle this itself
-            val urlEncodedFmtStreamMap = JsonParser.`object`().from(ytPlayerConfigJson)
-                    .getObject("args")
-                    .getString("url_encoded_fmt_stream_map")
-            ytPlayerConfig.args?.urlEncodedFmtStreamMap = urlEncodedFmtStreamMap
             val playerArgs = ytPlayerConfig.args!!
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
             val videoStreams = parseVideoStreams(playerArgs, playerUrl)

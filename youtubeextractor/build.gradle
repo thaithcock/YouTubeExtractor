@@ -14,8 +14,6 @@ dependencies {
 
     api 'org.jsoup:jsoup:1.11.3'
 
-    api 'com.grack:nanojson:1.2'
-
     api 'org.mozilla:rhino:1.7.10'
 
     testImplementation 'junit:junit:4.12'
