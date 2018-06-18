@@ -52,19 +52,19 @@ val extraction = extractor.extract("9d8wWcJLnFI")
 This library was only created to extract video stream URLs from YouTube, not provide a video player. [ExoMedia](https://github.com/brianwernick/ExoMedia) is a great library for playing the video streams to the user. See the sample app for an example.
 
 ## ProGuard
-This library uses [OkHttp](https://github.com/square/okhttp) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules.
+This library uses [OkHttp](https://github.com/square/okhttp), [Moshi](https://github.com/square/moshi#proguard) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules.
 
 ## Notes
 This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs.
 
 Known Failure Points:
 - Videos that are age restricted
-- Videos that are Audio only
+- Videos that are audio only
 
 License
 --------
 
-    Copyright 2017 Commit 451
+    Copyright 2018 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

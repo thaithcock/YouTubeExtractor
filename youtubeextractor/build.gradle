@@ -4,7 +4,6 @@ apply plugin: 'maven'
 
 group = 'com.github.Commit451'
 
-
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

@@ -14,7 +14,7 @@ import org.jsoup.parser.Parser
  * given its video id, which is typically contained within the YouTube video url, ie. https://www.youtube.com/watch?v=dQw4w9WgXcQ
  * has a video id of dQw4w9WgXcQ
  */
-class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
+class YouTubeExtractor private constructor(builder: Builder) {
 
     companion object {
 
@@ -40,17 +40,22 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
          * Create a new YouTubeExtractor with a custom OkHttp client builder
          * @return a new [YouTubeExtractor]
          */
+        @Deprecated("Use the Builder class instead", ReplaceWith("YouTubeExtractor.Builder().okHttpClientBuilder(okHttpBuilder).build()"))
         @JvmOverloads
         fun create(okHttpBuilder: OkHttpClient.Builder? = null): YouTubeExtractor {
-            return YouTubeExtractor(okHttpBuilder)
+            return YouTubeExtractor.Builder()
+                    .okHttpClientBuilder(okHttpBuilder)
+                    .build()
         }
     }
 
     private var client: OkHttpClient
     private var moshi: Moshi
+    private var debug = false
 
     init {
-        val clientBuilder = okBuilder ?: OkHttpClient.Builder()
+        this.debug = builder.debug
+        val clientBuilder = builder.okHttpClientBuilder ?: OkHttpClient.Builder()
         client = clientBuilder.build()
         moshi = Moshi.Builder()
                 .build()
@@ -64,6 +69,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
     fun extract(videoId: String): Single<YouTubeExtraction> {
         return Single.defer {
             val url = "$BASE_URL/watch?v=$videoId"
+            log("Extracting from URL $url")
             val pageContent = urlToString(url)
             val doc = Jsoup.parse(pageContent)
 
@@ -95,6 +101,7 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
             return block.invoke()
         } catch (e: Exception) {
             //we tried our best
+            log(e.message)
         }
         return null
     }
@@ -135,24 +142,62 @@ class YouTubeExtractor private constructor(okBuilder: OkHttpClient.Builder?) {
 
             val tags = Util.compatParseMap(Parser.unescapeEntities(urlDataStr, true))
 
-            val itag = Integer.parseInt(tags["itag"])
+            val itag = tags["itag"]?.toInt()
 
             if (ItagItem.isSupported(itag)) {
                 val itagItem = ItagItem.getItag(itag)
                 var streamUrl = tags["url"]
                 val signature = tags["s"]
                 if (signature != null) {
+                    log("Signature not found, decrypting signature for $streamUrl")
                     //TODO remove the need to remove all \n. It breaks the regex we have
                     val playerCode = urlToString(playerUrl)
                             .replace("\n", "")
                     streamUrl = streamUrl + "&signature=" + JavaScriptUtil.decryptSignature(signature, JavaScriptUtil.loadDecryptionCode(playerCode))
                 }
                 if (streamUrl != null) {
-                    urlAndItags.put(streamUrl, itagItem)
+                    urlAndItags[streamUrl] = itagItem
                 }
             }
         }
 
         return urlAndItags
+    }
+
+    private fun log(string: String?) {
+        if (debug) {
+            println(string)
+        }
+    }
+
+    /**
+     * Builds a [YouTubeExtractor] instance
+     */
+    class Builder {
+        internal var debug = false
+        internal var okHttpClientBuilder: OkHttpClient.Builder? = null
+
+        /**
+         * Forces logging to show for the [YouTubeExtractor]
+         */
+        fun debug(debug: Boolean): Builder {
+            this.debug = debug
+            return this
+        }
+
+        /**
+         * Set a custom [OkHttpClient.Builder] on the [YouTubeExtractor]
+         */
+        fun okHttpClientBuilder(okHttpClientBuilder: OkHttpClient.Builder?): Builder {
+            this.okHttpClientBuilder = okHttpClientBuilder
+            return this
+        }
+
+        /**
+         * Create the configured [YouTubeExtractor]
+         */
+        fun build(): YouTubeExtractor {
+            return YouTubeExtractor(this)
+        }
     }
 }

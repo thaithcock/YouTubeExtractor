@@ -11,6 +11,5 @@ data class Thumbnail(val url: String, val quality: String) {
         const val QUALITY_HIGH_QUALITY = "hqdefault"
         const val QUALITY_MEDIUM_QUALITY = "mqdefault"
         const val QUALITY_DEFAULT = "default"
-
     }
 }

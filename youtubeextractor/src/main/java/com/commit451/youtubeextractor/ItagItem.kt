@@ -55,12 +55,12 @@ internal class ItagItem(val id: Int, val format: String, val resolution: String)
         )
 
 
-        fun isSupported(itag: Int): Boolean {
+        fun isSupported(itag: Int?): Boolean {
             return ITAG_MAP.containsKey(itag)
         }
 
-        fun getItag(itagId: Int): ItagItem {
-            return ITAG_MAP[itagId] ?: throw YouTubeExtractionException("itag=" + Integer.toString(itagId) + " not supported")
+        fun getItag(itagId: Int?): ItagItem {
+            return ITAG_MAP[itagId] ?: throw YouTubeExtractionException("itag=$itagId not supported")
         }
     }
 }
