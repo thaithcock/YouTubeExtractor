@@ -6,7 +6,7 @@ import org.junit.Test
 class ExtractionTest {
 
     companion object {
-        private const val YOUTUBE_ID = "UEuOpxOrA_0"
+        private const val YOUTUBE_ID = "vuof6VpZUAs"
         private const val YOUTUBE_ID_REQUIRES_SIGNATURE = "_r6CgaFNAGg"
     }
 

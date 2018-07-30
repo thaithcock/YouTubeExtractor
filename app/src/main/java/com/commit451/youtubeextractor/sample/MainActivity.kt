@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private var savedPosition: Int = 0
 
-    private val extractor = YouTubeExtractor.create()
+    private val extractor = YouTubeExtractor.Builder()
+            .build()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +50,12 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState != null) {
             savedPosition = savedInstanceState.getInt(KEY_SAVED_POSITION, 0)
         }
-        videoView.setOnPreparedListener({
-            videoView.setVolume(0f)
+        videoView.setOnPreparedListener {
+            videoView.volume = 0f
             videoView.seekTo(savedPosition.toLong())
             savedPosition = 0
             videoView.start()
-        })
+        }
         videoView.setOnErrorListener { e ->
             e.printStackTrace()
             false
