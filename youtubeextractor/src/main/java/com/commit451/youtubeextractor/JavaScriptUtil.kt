@@ -9,25 +9,25 @@ import org.mozilla.javascript.Function
 internal object JavaScriptUtil {
 
     private const val DECRYPTION_FUNC_NAME = "decrypt"
+    private const val DECRYPTION_SIGNATURE_FUNCTION_REGEX = "(\\w+)\\s*=\\s*function\\((\\w+)\\)\\{\\s*\\2=\\s*\\2\\.split\\(\"\"\\)\\s*;"
+    private const val DECRYPTION_AKAMAIZED_STRING_REGEX = "yt\\.akamaized\\.net/\\)\\s*\\|\\|\\s*.*?\\s*c\\s*&&\\s*d\\.set\\([^,]+\\s*,\\s*([a-zA-Z0-9$]+)\\("
+    private const val DECRYPTION_AKAMAIZED_SHORT_STRING_REGEX = "\\bc\\s*&&\\s*d\\.set\\([^,]+\\s*,\\s*([a-zA-Z0-9$]+)\\("
 
     fun loadDecryptionCode(playerCode: String): String {
-        val decryptionFuncName: String = Util.matchGroup("([\"\\'])signature\\1\\s*,\\s*([a-zA-Z0-9$]+)\\(", playerCode, 2)
-        var callerFunc = "function $DECRYPTION_FUNC_NAME(a){return %%(a);}"
+        val decryptionFunctionName: String = when {
+            Util.isMatch(DECRYPTION_AKAMAIZED_SHORT_STRING_REGEX, playerCode) -> Util.matchGroup1(DECRYPTION_AKAMAIZED_SHORT_STRING_REGEX, playerCode)
+            Util.isMatch(DECRYPTION_AKAMAIZED_STRING_REGEX, playerCode) -> Util.matchGroup1(DECRYPTION_AKAMAIZED_STRING_REGEX, playerCode)
+            else -> Util.matchGroup1(DECRYPTION_SIGNATURE_FUNCTION_REGEX, playerCode)
+        }
+        val functionPattern = "(" + decryptionFunctionName.replace("$", "\\$") + "=function\\([a-zA-Z0-9_]+\\)\\{.+?\\})"
+        val decryptionFunction = "var " + Util.matchGroup1(functionPattern, playerCode) + ";"
 
-        val functionPattern = ("("
-                + decryptionFuncName.replace("$", "\\$")
-                + "=function\\([a-zA-Z0-9_]+\\)\\{.+?\\})")
-
-        val decryptionFunc = "var " + Util.matchGroup(functionPattern, playerCode, 1) + ";"
-
-        val helperObjectName = Util
-                .matchGroup(";([A-Za-z0-9_\\$]{2})\\...\\(", decryptionFunc, 1)
-
+        val helperObjectName = Util.matchGroup1(";([A-Za-z0-9_\\$]{2})\\...\\(", decryptionFunction)
         val helperPattern = "(var " + helperObjectName.replace("$", "\\$") + "=\\{.+?\\}\\};)"
-        val helperObject = Util.matchGroup(helperPattern, playerCode, 1)
+        val helperObject = Util.matchGroup1(helperPattern, playerCode.replace("\n", ""))
+        val callerFunction = "function $DECRYPTION_FUNC_NAME(a){return $decryptionFunctionName(a);}"
 
-        callerFunc = callerFunc.replace("%%", decryptionFuncName)
-        return helperObject + decryptionFunc + callerFunc
+        return helperObject + decryptionFunction + callerFunction
     }
 
     fun decryptSignature(encryptedSig: String, decryptionCode: String): String {
