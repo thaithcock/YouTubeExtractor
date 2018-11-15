@@ -28,8 +28,8 @@ dependencies {
 If you are familiar with RxJava, the extractor returns a Single:
 
 ```kotlin
-//create one of these and reuse it for performance reasons
-YouTubeExtractor extractor = YouTubeExtractor.create();
+val extractor = YouTubeExtractor.Builder()
+            .build()
 extractor.extract("9d8wWcJLnFI")
     .subscribeOn(Schedulers.io())
     .observeOn(AndroidSchedulers.mainThread())

@@ -2,11 +2,11 @@ package com.commit451.youtubeextractor.sample
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.commit451.youtubeextractor.YouTubeExtraction
 import com.commit451.youtubeextractor.YouTubeExtractor
@@ -18,14 +18,14 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val GRID_YOUTUBE_ID = "UAz1Apj2kqs"
+        private const val GRID_YOUTUBE_ID = "9d8wWcJLnFI"
 
         private const val KEY_SAVED_POSITION = "saved_position"
     }
 
-    lateinit var imageView: ImageView
-    lateinit var description: TextView
-    lateinit var videoView: VideoView
+    private lateinit var imageView: ImageView
+    private lateinit var description: TextView
+    private lateinit var videoView: VideoView
 
     private var savedPosition: Int = 0
 
