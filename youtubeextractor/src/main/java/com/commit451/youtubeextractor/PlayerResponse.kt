@@ -19,6 +19,8 @@ internal data class PlayerResponse(
     data class Format(
         @Json(name = "itag")
         var itag: Int? = null,
+        @Json(name = "approxDurationMs")
+        var approxDurationMs: String? = null,
         @Json(name = "url")
         var url: String? = null,
         @Json(name = "cipher")

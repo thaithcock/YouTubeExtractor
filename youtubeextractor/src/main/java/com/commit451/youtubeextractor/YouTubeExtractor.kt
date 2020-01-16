@@ -6,6 +6,7 @@ import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 
 /**
@@ -73,30 +74,54 @@ class YouTubeExtractor private constructor(builder: Builder) {
             val pageContent = urlToString(url)
             val doc = Jsoup.parse(pageContent)
 
-
-            val firstSplit = pageContent.split("ytplayer.config = ")
-            val secondSplit = firstSplit[1].split(";ytplayer.load")
-            val ytPlayerConfigJson = secondSplit.first()
-
-            //val ytPlayerConfigJson = Util.matchGroup1("ytplayer.config = \\{.*?\\n", pageContent)
+            val ytPlayerConfigJson = Util.matchGroup1("ytplayer.config\\s*=\\s*(\\{.*?\\});", pageContent)
             val ytPlayerConfig = moshi.adapter<PlayerConfig>(PlayerConfig::class.java).fromJson(ytPlayerConfigJson)!!
             val playerArgs = ytPlayerConfig.args!!
             val playerResponse = moshi.adapter<PlayerResponse>(PlayerResponse::class.java).fromJson(playerArgs.playerResponse!!)!!
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
             val videoStreams = parseVideoStreams(playerResponse, playerUrl)
-            val description = tryIgnoringException { doc.select("p[id=\"eow-description\"]").first().html() }
             val extraction = YouTubeExtraction(
-                videoId,
-                playerArgs.title,
-                videoStreams,
-                extractThumbnails(videoId),
-                playerArgs.author,
-                description,
-                playerArgs.viewCount?.toLongOrNull(),
-                playerArgs.lengthSeconds?.toLongOrNull()
+                videoId = videoId,
+                title = title(playerArgs, doc),
+                videoStreams = videoStreams,
+                thumbnails = extractThumbnails(videoId),
+                author = author(playerArgs, doc),
+                description = descriptionFromHtml(doc),
+                viewCount = viewCountFromHtml(doc),
+                durationMilliseconds = playerResponse.streamingData?.formats?.find { it.approxDurationMs != null }?.approxDurationMs?.toLong()
             )
             Single.just(extraction)
         }
+    }
+
+    private fun title(playerArgs: PlayerArgs, doc: Document): String? {
+        return playerArgs.title ?: titleFromHtml(doc)
+    }
+
+    private fun titleFromHtml(doc: Document): String? {
+        return tryIgnoringException {
+            doc.select("meta[name=title]").attr("content")
+        }
+    }
+
+    private fun author(playerArgs: PlayerArgs, doc: Document): String? {
+        return playerArgs.author ?: authorFromHtml(doc)
+    }
+
+    private fun authorFromHtml(doc: Document): String? {
+        return tryIgnoringException {
+            doc.select("div.yt-user-info").first().text();
+        }
+    }
+
+    private fun descriptionFromHtml(doc: Document): String? {
+        return tryIgnoringException {
+            doc.select("p[id=\"eow-description\"]").first().html()
+        }
+    }
+
+    private fun viewCountFromHtml(doc: Document): Long? {
+        return doc.select("meta[itemprop=interactionCount]").attr("content").toLong()
     }
 
     private fun tryIgnoringException(block: () -> String): String? {

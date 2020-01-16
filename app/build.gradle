@@ -7,7 +7,8 @@ android {
 
     defaultConfig {
         applicationId "com.commit451.youtubeextractor.sample"
-        minSdkVersion rootProject.ext.minSdkVersion
+        // Works with lower versions, just don't want to deal with multidex for the sample
+        minSdkVersion 21
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"

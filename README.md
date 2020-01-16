@@ -1,5 +1,5 @@
 # YouTubeExtractor
-A helper to extract the streaming URL from a YouTube video using RxJava and Retrofit
+A helper to extract the streaming URL from a YouTube video using RxJava, Retrofit, Moshi, and others.
 
 [![Build Status](https://travis-ci.org/Commit451/YouTubeExtractor.svg?branch=master)](https://travis-ci.org/Commit451/YouTubeExtractor)
 [![](https://jitpack.io/v/Commit451/YouTubeExtractor.svg)](https://jitpack.io/#Commit451/YouTubeExtractor)
@@ -55,7 +55,7 @@ This library was only created to extract video stream URLs from YouTube, not pro
 This library uses [OkHttp](https://github.com/square/okhttp), [Moshi](https://github.com/square/moshi#proguard) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules.
 
 ## Notes
-This library is intentionally being kept pretty lightweight, with the main priority being the stream URLs.
+This library is intentionally being kept pretty "lightweight", with the main priority being the stream URLs.
 
 Known Failure Points:
 - Videos that are age restricted
@@ -64,7 +64,7 @@ Known Failure Points:
 License
 --------
 
-    Copyright 2018 Commit 451
+    Copyright 2020 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

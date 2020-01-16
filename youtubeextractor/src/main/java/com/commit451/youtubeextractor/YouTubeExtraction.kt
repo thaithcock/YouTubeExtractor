@@ -11,5 +11,5 @@ data class YouTubeExtraction(
         val author: String?,
         val description: String?,
         val viewCount: Long?,
-        val lengthSeconds: Long?
+        val durationMilliseconds: Long?
 )
