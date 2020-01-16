@@ -2,16 +2,15 @@ package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Json
 
-internal class PlayerArgs {
-
-    @field:Json(name = "url_encoded_fmt_stream_map")
-    var urlEncodedFmtStreamMap: String? = null
-    @field:Json(name = "title")
-    var title: String? = null
-    @field:Json(name = "author")
-    var author: String? = null
-    @field:Json(name = "view_count")
-    var viewCount: String? = null
-    @field:Json(name = "length_seconds")
-    var lengthSeconds: String? = null
-}
+internal data class PlayerArgs(
+    @Json(name = "title")
+    var title: String? = null,
+    @Json(name = "author")
+    var author: String? = null,
+    @Json(name = "view_count")
+    var viewCount: String? = null,
+    @Json(name = "length_seconds")
+    var lengthSeconds: String? = null,
+    @Json(name = "player_response")
+    var playerResponse: String? = null
+)

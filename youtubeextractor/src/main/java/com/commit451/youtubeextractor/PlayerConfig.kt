@@ -2,17 +2,14 @@ package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Json
 
-internal class PlayerConfig {
-
-    @field:Json(name = "args")
-    var args: PlayerArgs? = null
-    @field:Json(name = "assets")
+internal data class PlayerConfig(
+    @Json(name = "args")
+    var args: PlayerArgs? = null,
+    @Json(name = "assets")
     var assets: Assets? = null
-
-    class Assets {
-
-        @field:Json(name = "js")
+) {
+    data class Assets(
+        @Json(name = "js")
         var js: String? = null
-
-    }
+    )
 }
