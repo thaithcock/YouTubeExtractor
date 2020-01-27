@@ -1,12 +1,15 @@
 package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 internal data class PlayerResponse(
     @Json(name = "streamingData")
     var streamingData: StreamingData? = null
 ) {
 
+    @JsonClass(generateAdapter = true)
     data class StreamingData(
         @Json(name = "hlsManifestUrl")
         var hlsManifestUrl: String? = null,
@@ -16,6 +19,7 @@ internal data class PlayerResponse(
         var adaptiveFormats: List<Format>? = null
     )
 
+    @JsonClass(generateAdapter = true)
     data class Format(
         @Json(name = "itag")
         var itag: Int? = null,

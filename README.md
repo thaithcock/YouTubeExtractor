@@ -51,8 +51,8 @@ val extraction = extractor.extract("9d8wWcJLnFI")
 ## Video Playback
 This library was only created to extract video stream URLs from YouTube, not provide a video player. [ExoMedia](https://github.com/brianwernick/ExoMedia) is a great library for playing the video streams to the user. See the sample app for an example.
 
-## ProGuard
-This library uses [OkHttp](https://github.com/square/okhttp), [Moshi](https://github.com/square/moshi#proguard) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their ProGuard rules.
+## ProGuard/R8
+This library uses [OkHttp](https://github.com/square/okhttp), [Moshi](https://github.com/square/moshi#proguard) and [Rhino](https://github.com/facebook/stetho/tree/master/stetho-js-rhino#proguard) under the hood, so you may need to apply their rules.
 
 ## Notes
 This library is intentionally being kept pretty "lightweight", with the main priority being the stream URLs.

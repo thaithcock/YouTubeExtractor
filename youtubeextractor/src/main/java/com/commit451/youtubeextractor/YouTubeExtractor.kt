@@ -1,7 +1,6 @@
 package com.commit451.youtubeextractor
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -58,7 +57,6 @@ class YouTubeExtractor private constructor(builder: Builder) {
         val clientBuilder = builder.okHttpClientBuilder ?: OkHttpClient.Builder()
         client = clientBuilder.build()
         moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
             .build()
     }
 

@@ -1,6 +1,7 @@
 apply plugin: "java-library"
-apply plugin: "kotlin"
 apply plugin: "maven"
+apply plugin: "kotlin"
+apply plugin: "kotlin-kapt"
 
 group = "com.github.Commit451"
 
@@ -12,7 +13,7 @@ dependencies {
 
     api "com.squareup.okhttp3:okhttp:3.14.6"
     api "com.squareup.moshi:moshi:$moshiVersion"
-    api "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
 
     api "io.reactivex.rxjava2:rxjava:2.2.17"
 
