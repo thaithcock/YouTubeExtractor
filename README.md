@@ -61,6 +61,13 @@ Known Failure Points:
 - Videos that are age restricted
 - Videos that are audio only
 
+It is worth noting that YouTube "alternatives" such as NewPipe are often removed from the Play Store due to licensing, so be cautious of this and other rules when using this library. We are not responsible for misfortune that comes from using this library. 
+
+## Alternatives
+There are lots of different libraries that are dedicated to YouTube playback, each with its own pros and cons. This library is dedicated primarily to loading video stream URLs. If you need something more, check out some of these other libraries:
+- https://developers.google.com/youtube/android/player
+- https://github.com/PierfrancescoSoffritti/android-youtube-player
+
 License
 --------
 
