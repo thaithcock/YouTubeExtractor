@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.commit451.youtubeextractor.Stream
 import com.commit451.youtubeextractor.YouTubeExtraction
 import com.commit451.youtubeextractor.YouTubeExtractor
 import com.devbrackets.android.exomedia.ui.widget.VideoView
@@ -59,7 +60,6 @@ class MainActivity : AppCompatActivity() {
             savedPosition = savedInstanceState.getInt(KEY_SAVED_POSITION, 0)
         }
         videoView.setOnPreparedListener {
-            videoView.volume = 0f
             videoView.seekTo(savedPosition.toLong())
             savedPosition = 0
             videoView.start()
@@ -88,7 +88,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindVideoResult(result: YouTubeExtraction) {
-        val videoUrl = result.videoStreams.first().url
+        val videoUrl = result.streams
+            .filterIsInstance<Stream.VideoStream>()
+            .max()
+            ?.url
         Log.d("OnSuccess", "Got a result with the best url: $videoUrl")
         title.text = result.title
         val descriptionText = Html.fromHtml(result.description).toString()

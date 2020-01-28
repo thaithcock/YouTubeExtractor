@@ -7,7 +7,6 @@ import okhttp3.Request
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-
 /**
  * Class that allows you to extract stream data from a YouTube video
  * given its video id, which is typically contained within the YouTube video url, ie. https://www.youtube.com/watch?v=dQw4w9WgXcQ
@@ -77,11 +76,11 @@ class YouTubeExtractor private constructor(builder: Builder) {
             val playerArgs = ytPlayerConfig.args!!
             val playerResponse = moshi.adapter<PlayerResponse>(PlayerResponse::class.java).fromJson(playerArgs.playerResponse!!)!!
             val playerUrl = formatPlayerUrl(ytPlayerConfig)
-            val videoStreams = parseVideoStreams(playerResponse, playerUrl)
+            val streams = parseStreams(playerResponse, playerUrl)
             val extraction = YouTubeExtraction(
                 videoId = videoId,
                 title = title(playerArgs, doc),
-                videoStreams = videoStreams,
+                streams = streams,
                 thumbnails = extractThumbnails(videoId),
                 author = author(playerArgs, doc),
                 description = descriptionFromHtml(doc),
@@ -155,12 +154,18 @@ class YouTubeExtractor private constructor(builder: Builder) {
         return playerUrl
     }
 
-    private fun parseVideoStreams(playerResponse: PlayerResponse, playerUrl: String): List<VideoStream> {
-        val itags = parseVideoItags(playerResponse, playerUrl)
-        return itags.map { VideoStream(it.key, it.value.format, it.value.resolution) }
+    private fun parseStreams(playerResponse: PlayerResponse, playerUrl: String): List<Stream> {
+        val itags = parseItags(playerResponse, playerUrl)
+        return itags.map {
+            when (it.value.type) {
+                StreamType.VIDEO -> Stream.VideoStream(it.key, it.value.format, it.value.resolution!!, false)
+                StreamType.AUDIO -> Stream.AudioStream(it.key, it.value.format)
+                StreamType.VIDEO_ONLY -> Stream.VideoStream(it.key, it.value.format, it.value.resolution!!, true)
+            }
+        }
     }
 
-    private fun parseVideoItags(playerResponse: PlayerResponse, playerUrl: String): Map<String, ItagItem> {
+    private fun parseItags(playerResponse: PlayerResponse, playerUrl: String): Map<String, ItagItem> {
         val urlAndItags = LinkedHashMap<String, ItagItem>()
 
         val playerCode = urlToString(playerUrl)

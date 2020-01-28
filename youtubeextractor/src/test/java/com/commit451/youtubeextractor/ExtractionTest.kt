@@ -22,7 +22,7 @@ class ExtractionTest {
     }
 
     private fun testResult(extraction: YouTubeExtraction) {
-        Assert.assertTrue(extraction.videoStreams.isNotEmpty())
+        Assert.assertTrue(extraction.streams.isNotEmpty())
         Assert.assertTrue(extraction.thumbnails.isNotEmpty())
         Assert.assertNotNull(extraction.title)
         Assert.assertNotNull(extraction.description)
