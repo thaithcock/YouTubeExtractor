@@ -123,7 +123,7 @@ class YouTubeExtractor private constructor(builder: Builder) {
         }
     }
 
-    private fun tryIgnoringException(block: () -> String): String? {
+    private fun <T>tryIgnoringException(block: () -> T): T? {
         try {
             return block.invoke()
         } catch (e: Exception) {
