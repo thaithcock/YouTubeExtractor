@@ -118,7 +118,9 @@ class YouTubeExtractor private constructor(builder: Builder) {
     }
 
     private fun viewCountFromHtml(doc: Document): Long? {
-        return doc.select("meta[itemprop=interactionCount]").attr("content").toLong()
+        return tryIgnoringException {
+            doc.select("meta[itemprop=interactionCount]").attr("content").toLong()
+        }
     }
 
     private fun tryIgnoringException(block: () -> String): String? {
