@@ -172,7 +172,11 @@ class YouTubeExtractor private constructor(builder: Builder) {
 
         val playerCode = urlToString(playerUrl)
             .replace("\n", "")
-        val decryptionCode = JavaScriptUtil.loadDecryptionCode(playerCode)
+        val decryptionCode = try {
+            JavaScriptUtil.loadDecryptionCode(playerCode)
+        } catch(e: Exception) {
+            null
+        }
 
         playerResponse.streamingData?.formats?.forEach {
             parseItag(it, decryptionCode, urlAndItags)
@@ -183,7 +187,7 @@ class YouTubeExtractor private constructor(builder: Builder) {
         return urlAndItags
     }
 
-    private fun parseItag(format: PlayerResponse.Format, decryptionCode: String, map: LinkedHashMap<String, ItagItem>) {
+    private fun parseItag(format: PlayerResponse.Format, decryptionCode: String?, map: LinkedHashMap<String, ItagItem>) {
         if (!ItagItem.isSupported(format.itag)) {
             return
         }
@@ -191,10 +195,12 @@ class YouTubeExtractor private constructor(builder: Builder) {
         val url = format.url
         val streamUrl = if (url != null) {
             url
-        } else {
+        } else if (decryptionCode != null) {
             // encrypted signature
             val cipher: Map<String, String> = Util.compatParseMap(format.cipher!!)
             cipher["url"].toString() + "&" + cipher["sp"] + "=" + JavaScriptUtil.decryptSignature(cipher["s"]!!, decryptionCode)
+        } else {
+            throw Exception("No url or decryption code!")
         }
         map[streamUrl] = itag
     }
